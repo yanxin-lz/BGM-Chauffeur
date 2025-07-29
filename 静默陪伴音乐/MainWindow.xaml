@@ -117,7 +117,7 @@
 
             <!-- 帮助菜单 -->
             <MenuItem Header="关于(_H)">
-                <MenuItem Header="静默陪伴播放器 1.0.0"></MenuItem>
+                <MenuItem Header="静默陪伴播放器 1.0.1"></MenuItem>
                 <MenuItem Header="更新时间 2025-07-29"></MenuItem>
             </MenuItem>
 
