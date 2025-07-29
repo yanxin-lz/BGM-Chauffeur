@@ -1,0 +1,274 @@
+﻿<Window  x:Class="静默陪伴音乐.音乐播放器"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:t="clr-namespace:静默陪伴音乐"
+         xmlns:pu="https://opensource.panuon.com/wpf-ui"
+         Foreground="White"
+                     Title="背景音乐播放器" Height="700" Width="440" MaxWidth="500" MinWidth="420" MinHeight="480"
+
+
+                     WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Static pu:StyleKeys.ButtonStyle}}">
+            <Setter Property="pu:ButtonHelper.CornerRadius" Value="8"></Setter>
+            <Setter Property="Background" Value="#ff0c74ba"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+        <Style TargetType="Slider" BasedOn="{StaticResource {x:Static pu:StyleKeys.SliderStyle}}">
+            <Setter Property="pu:SliderHelper.ThumbBackground" Value="#e3f5ff"></Setter>
+            <Setter Property="pu:SliderHelper.ThumbBorderThickness" Value="3"></Setter>
+            <Setter Property="Background" Value="#3f0c74ba"></Setter>
+            <Setter Property="Margin" Value="0 0 8 0"></Setter>
+            <Setter Property="pu:SliderHelper.TrackCornerRadius" Value="3"></Setter>
+            <Setter Property="pu:SliderHelper.CoveredBackground" Value="#6f0c74ba"></Setter>
+        </Style>
+ 
+        
+        
+        
+    </Window.Resources>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top"
+              pu:MenuHelper.TopLevelItemsHoverBackground="#ff0c74ba"
+              pu:MenuHelper.SubmenuItemsHoverBackground="#ff0c74ba"
+              pu:MenuHelper.TopLevelItemsHoverForeground="White"
+              pu:MenuHelper.SubmenuItemsHoverForeground="White"
+              
+              Height="25"
+              >
+            <!-- 文件菜单 -->
+            <MenuItem Header="文件(_F)">
+                <MenuItem Header="添加文件(_A)..."  Click="打开单个音频_Click"/>
+                <Separator />
+                <MenuItem Header="打开播放列表(_O)..." Click="打开播放列表_Click"/>
+                <MenuItem Header="保存播放列表(_S)..." Click="保存播放列表_Click"/>
+                <Separator />
+                <MenuItem Header="退出(_X)" InputGestureText="Alt+F4" Click="关闭按钮_Click"/>
+            </MenuItem>
+
+            <!-- 播放控制菜单 -->
+            <MenuItem Header="控制(_P)">
+                <MenuItem Header="播放/暂停(_P)"  Click="播放或暂停按钮_Click"/>
+                <MenuItem Header="停止(_T)"  Click="停止按钮_Click"/>
+                <Separator />
+                <MenuItem Header="上一曲(_B)"  Click="上一曲_Click"/>
+                <MenuItem Header="下一曲(_N)"  Click="下一曲_Click"/>
+                <Separator />
+
+                <!-- 播放模式子菜单 -->
+                <MenuItem Header="播放模式">
+                    <MenuItem Header="顺序播放(_S)" 
+                      Click="播放模式_顺序播放_Click"/>
+
+                    <MenuItem Header="单曲循环(_L)" 
+                      Click="播放模式_单曲循环_Click"/>
+
+                    <MenuItem Header="列表循环(_C)" 
+                      Click="播放模式_列表循环_Click"/>
+
+
+                    <MenuItem Header="随机播放(_R)" 
+                      Click="播放模式_随机播放_Click"/>
+                </MenuItem>
+
+                <Separator />
+
+                <!-- 音量控制子菜单 -->
+                <MenuItem Header="音量控制">
+                    <MenuItem Header="增大(_+)"  Click="增大音量"/>
+                    <MenuItem Header="减小(_-)" Click="减小音量" />
+                </MenuItem>
+            </MenuItem>
+
+            <!-- 侦听设置菜单 -->
+            <MenuItem Header="侦听(_M)">
+                <MenuItem Header="自动启停(_E)" 
+                  Click="自动启停_Click"/>
+
+                <Separator />
+
+                <!-- 响应延迟设置 -->
+                <MenuItem Header="响应延迟设置">
+                    <MenuItem Header="立即暂停(_I)" Click="立即重播" />
+
+                    <MenuItem Header="延迟2秒"  Click="等待2秒后重播"
+                    />
+
+                    <MenuItem Header="延迟4秒"  Click="等待4秒后重播"
+                    />
+                </MenuItem>
+
+
+            </MenuItem>
+
+            <!-- 播放列表管理菜单 -->
+            <MenuItem Header="播放列表(_L)">
+                <MenuItem Header="清空列表(_C)" Click="播放列表_清空_Click"/>
+                <MenuItem Header="移除选中项(_R)" Click="移除歌曲_Click"/>
+                <Separator />
+                <MenuItem Header="选中项上移(_B)"  Click="上移_Click"/>
+                <MenuItem Header="选中项下移(_N)"  Click="下移_Click"/>
+                <Separator />
+                <MenuItem Header="设置为默认播放列表(_S)..." Click="保存为默认_Click"/>
+            </MenuItem>
+
+            <!-- 帮助菜单 -->
+            <MenuItem Header="关于(_H)">
+                <MenuItem Header="静默陪伴播放器 1.0.0"></MenuItem>
+                <MenuItem Header="更新时间 2025-07-29"></MenuItem>
+            </MenuItem>
+
+        </Menu>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderThickness="0 0 0 2" BorderBrush="#3f025fff">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White" Offset="1"/>
+                        <GradientStop Color="#FF7FD3FF" Offset="0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" MinWidth="100"></ColumnDefinition>
+                        <ColumnDefinition Width="4*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="#7fffffff" CornerRadius="10" Margin="12">
+                        <Viewbox Width="60" Height="60">
+                            <Canvas Width="1024" Height="1024">
+                                <!-- First Path -->
+                                <Path Fill="#5f3d90c8" Data="M459.838061 502.318545c0-30.657939 24.948364-55.606303 55.606303-55.606303s55.544242 24.948364 55.544242 55.606303-24.886303 55.606303-55.544242 55.606303a55.668364 55.668364 0 0 1-55.606303-55.606303m173.242181 0c0-64.884364-52.751515-117.666909-117.635878-117.666909a117.79103 117.79103 0 0 0-117.666909 117.666909 117.79103 117.79103 0 0 0 117.666909 117.66691 117.76 117.76 0 0 0 117.604848-117.66691"/>
+
+                                <!-- Second Path -->
+                                <Path Fill="#6f3d90c8" Data="M515.413333 935.439515c-238.809212 0-433.089939-194.311758-433.089939-433.089939 0-238.840242 194.249697-433.18303 433.12097-433.183031 238.809212 0 433.12097 194.342788 433.120969 433.183031 0 238.778182-194.311758 433.089939-433.120969 433.089939m0-928.302545C242.346667 7.13697 20.262788 229.251879 20.262788 502.349576c0 273.035636 222.145939 495.181576 495.181576 495.181576s495.181576-222.17697 495.181575-495.181576c0-273.066667-222.17697-495.243636-495.181575-495.243637"/>
+
+                                <!-- Third Path -->
+                                <Path Fill="#8f3d90c8" Data="M806.353455 471.288242a31.030303 31.030303 0 0 0-31.030303 31.030303v0.031031c0 143.297939-116.580848 259.847758-259.878788 259.847757a31.030303 31.030303 0 0 0 0 62.060606c177.493333 0 321.939394-144.41503 321.939394-321.939394a31.030303 31.030303 0 0 0-31.030303-31.030303M515.413333 242.439758a31.030303 31.030303 0 0 0 0-62.060606c-177.493333 0-321.877333 144.41503-321.908363 321.908363v0.03103a31.030303 31.030303 0 0 0 62.060606 0c0-143.297939 116.580848-259.878788 259.878788-259.878787z"/>
+                            </Canvas>
+                        </Viewbox>
+
+                    </Border>
+                    <Grid Grid.Column="1" Margin="6 12 0 15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding 数据.当前歌曲.显示名称}" Foreground="DarkBlue" FontSize="18" VerticalAlignment="Bottom" ClipToBounds="True"></TextBlock>
+                          
+                        </StackPanel>
+                        <Grid  Grid.Row="1" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="8*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Slider VerticalAlignment="Center" MinWidth="200" Value="{Binding 数据.播放进度}" Minimum="0" Maximum="100" x:Name="播放进度"></Slider>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="{Binding 数据.当前播放时间,StringFormat={}{0:mm}:{0:ss}/}" VerticalAlignment="Center" Margin="8 0 0 0" Foreground="DarkBlue" ></TextBlock>
+                            <TextBlock Text="{Binding 数据.总时长,StringFormat={}{0:mm}:{0:ss}}" VerticalAlignment="Center" Foreground="DarkBlue" ></TextBlock>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left">
+                            <Button Content="播放/暂停" Padding="6 0 6 0" Margin="0 0 8 0" Click="播放或暂停按钮_Click"></Button>
+                            <Button Content="停止" Padding="6 0 6 0" Margin="0 0 8 0" Click="停止按钮_Click"></Button>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0 0 6 0">
+                            <Slider Value="{Binding 数据.当前音量}" Width="60" VerticalAlignment="Center" Minimum="0" Maximum="1" ValueChanged="修改音量"></Slider>
+                            <TextBlock Text="{Binding 数据.当前音量,StringFormat=音量 0%}" Foreground="#af000000" VerticalAlignment="Center" MinWidth="65"></TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+            <ListBox x:Name="播放列表" Background="White" Grid.Row="1" BorderThickness="0" ItemsSource="{Binding 数据.播放列表}"
+                     SelectionChanged="播放列表_SelectionChanged" AllowDrop="True"
+                     MouseDoubleClick="播放列表_MouseDoubleClick"
+                     pu:ListBoxHelper.ItemsPadding="12"
+                     pu:ListBoxHelper.ItemsHoverBackground="#5f2079bb"
+                     pu:ListBoxHelper.ItemsSelectedBackground="#af001e36"
+                     pu:ListBoxHelper.ItemsSelectedForeground="White"
+                     FontSize="13"
+                     
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                            <CheckBox IsChecked="{Binding 是否正在播放}"
+                                      pu:CheckBoxHelper.CheckedGlyphBrush="{x:Null}"
+                                      pu:CheckBoxHelper.CheckedBackground="#0ba485"
+                                       pu:CheckBoxHelper.CornerRadius="8"
+                                        pu:CheckBoxHelper.CheckedBorderThickness="0"
+                                      IsEnabled="False"
+                                      VerticalAlignment="Center"
+                                      
+                                      ></CheckBox>
+                            <TextBlock Text="{Binding 排序,StringFormat=0 -}" Margin="0  0 6 0 " ></TextBlock>
+                            <TextBlock Text="{Binding 显示名称}"></TextBlock>
+     
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="移除选中项" Click="移除歌曲_Click"/>
+                        <MenuItem Header="清空列表" Click="播放列表_清空_Click"/>
+                        <MenuItem Header="上移" Click="上移_Click"/>
+                        <MenuItem Header="下移" Click="下移_Click"/>
+                        <MenuItem Header="打开文件位置" Click="打开文件位置"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+            <StatusBar Grid.Row="2"  Foreground="Black" >
+                <StatusBarItem Margin="6 0 0 0">
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding 数据.当前歌曲.排序,StringFormat=第0/}" />
+                        <TextBlock Text="{Binding 数据.播放列表.Count,StringFormat=0个项目}" />
+
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator Margin="6 0 6  0" />
+                <StatusBarItem>
+                    <TextBlock Text="{Binding 数据.当前播放模式}" />
+                </StatusBarItem>
+                <Separator Margin="6 0 6  0" />
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding 设置.自动启停}" IsEnabled="False"
+                                  
+                                pu:CheckBoxHelper.CheckedGlyphBrush="{x:Null}"
+                               pu:CheckBoxHelper.CheckedBackground="#3f90c8"
+                                pu:CheckBoxHelper.CornerRadius="8"
+                                 pu:CheckBoxHelper.CheckedBorderThickness="0"
+                                  ></CheckBox>
+                        <TextBlock Text="启停时间：" />
+                        <TextBlock Text="{Binding 数据.无声时间}" />
+                        <TextBlock Text="/" />
+                        <TextBlock Text="{Binding 设置.重播间隔}" />
+
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator Margin="6 0 6  0" />
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding 数据.当前播放状态}" />
+
+                    </StackPanel>
+                    
+                </StatusBarItem>
+
+            </StatusBar>
+        </Grid>
+    </DockPanel>    
+
+
+</Window>
