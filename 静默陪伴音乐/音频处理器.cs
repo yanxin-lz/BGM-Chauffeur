@@ -45,7 +45,7 @@ namespace 静默陪伴音乐
             if (音频流 == null) return;
             if (播放设备 == null) return;
             // 判断是否为自然播放结束
-            bool 是播放完毕 = (double)音频流.Position / (double)音频流.Length > 0.9;
+            bool 是播放完毕 = (double)音频流.Position / (double)音频流.Length > 0.9 || (double)播放设备.GetPosition() / (double)音频流.Length > 0.95;
 
             if (是播放完毕)
             {

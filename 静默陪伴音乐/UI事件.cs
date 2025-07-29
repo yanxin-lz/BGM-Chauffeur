@@ -82,6 +82,8 @@ namespace 静默陪伴音乐
 
         private void 上一曲_Click(object sender, RoutedEventArgs e)
         {
+            if (数据.当前歌曲 == null) { return; }
+            if (数据.播放列表.Count == 0) { return; }
             var 当前曲目数 = 数据.播放列表.ToList().IndexOf(数据.当前歌曲);
 
             if (当前曲目数 == -1) { 当前曲目数 = 0; }
@@ -92,6 +94,8 @@ namespace 静默陪伴音乐
 
         private void 下一曲_Click(object sender, RoutedEventArgs e)
         {
+            if (数据.当前歌曲 == null) { return; }
+            if (数据.播放列表.Count == 0) { return; }
             var 当前曲目数 = 数据.播放列表.ToList().IndexOf(数据.当前歌曲);
 
             if (当前曲目数 == -1) { 当前曲目数 = 0; }
