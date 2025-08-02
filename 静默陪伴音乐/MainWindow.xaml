@@ -219,10 +219,11 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="移除选中项" Click="移除歌曲_Click"/>
-                        <MenuItem Header="清空列表" Click="播放列表_清空_Click"/>
+                        <MenuItem Header="播放" Click="播放列表_MouseDoubleClick"/>
+                        <MenuItem Header="移除" Click="移除歌曲_Click"/>
                         <MenuItem Header="上移" Click="上移_Click"/>
                         <MenuItem Header="下移" Click="下移_Click"/>
+                        <MenuItem Header="清空列表" Click="播放列表_清空_Click"/>
                         <MenuItem Header="打开文件位置" Click="打开文件位置"/>
                     </ContextMenu>
                 </ListBox.ContextMenu>

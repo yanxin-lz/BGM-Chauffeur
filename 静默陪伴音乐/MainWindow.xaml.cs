@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
@@ -94,6 +95,7 @@ namespace 静默陪伴音乐
                     Title = $"{数据.当前播放状态} | {数据.当前播放时间.ToString(@"mm\:ss")}/{数据.总时长.ToString(@"mm\:ss")}";
                 }
 
+
             };
             音频检测计时器.Start(); UI更新.Start();
             音频处理器.等待下一曲 += 音频处理器_等待下一曲;
@@ -125,7 +127,12 @@ namespace 静默陪伴音乐
             }
         }
 
-
+        private void 播放列表_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            var 选中项 = (播放列表项)播放列表.SelectedItem;
+            if (选中项 == null) { return; }
+            播放音频(选中项);
+        }
     }
 
 }
