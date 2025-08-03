@@ -13,7 +13,7 @@ namespace 静默陪伴音乐
 
         public bool 载入音频文件(string 文件路径)
         {
-            if (播放设备 == null) { 播放设备 = new NAudio.Wave.WaveOutEvent(); }
+            if (播放设备 == null) { 播放设备 = new NAudio.Wave.WaveOutEvent(); 播放设备.PlaybackStopped += 播放设备_PlaybackStopped; }
             string ext = System.IO.Path.GetExtension(文件路径).ToLower();
             if (ext == ".mp3" || ext == ".wav" || ext == ".flac")
             {
@@ -36,7 +36,7 @@ namespace 静默陪伴音乐
             }
             播放设备.Init(当前音频适配器);
             播放设备.Play();
-            播放设备.PlaybackStopped += 播放设备_PlaybackStopped;
+
             return true;
         }
 
