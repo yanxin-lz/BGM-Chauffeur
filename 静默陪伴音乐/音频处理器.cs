@@ -10,7 +10,10 @@ namespace 静默陪伴音乐
         public WaveStream? 音频流 { get; set; } = null;
 
         public event Action? 等待下一曲;
-
+        public 音频处理器()
+        {
+            播放设备.PlaybackStopped += 播放设备_PlaybackStopped;
+        }
         public bool 载入音频文件(string 文件路径)
         {
             if (播放设备 == null) { 播放设备 = new NAudio.Wave.WaveOutEvent(); 播放设备.PlaybackStopped += 播放设备_PlaybackStopped; }
